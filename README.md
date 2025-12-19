@@ -1,7 +1,7 @@
 # FRP Docker Images
 
-A minimalist Docker daily build for FRP (Fast Reverse Proxy).
-每日更新的 FRP 镜像。
+A latest Docker build for FRP (Fast Reverse Proxy).
+最新的 FRP 镜像(每日更新)。
 https://github.com/yuanjua/frp-docker.git
 
 ## Installation
@@ -37,7 +37,7 @@ auth.token = "12345678"  # Change to Strong Token
 Start the server:
 
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 ### Client (frpc) 客户端
@@ -77,7 +77,7 @@ remotePort = 6000
 Start the client:
 
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 ## Build from Source
