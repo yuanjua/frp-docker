@@ -14,7 +14,7 @@ https://github.com/yuanjua/frp-docker.git
 version: '3.8'
 services:
   frps:
-    image: yuanjua/frps:latest
+    image: yuanjua/frps:latest # OR ghcr.io/yuanjua/frps:latest
     container_name: frps
     restart: always
     network_mode: host
@@ -48,7 +48,7 @@ docker-compose up -d
 version: '3.8'
 services:
   frpc:
-    image: yuanjua/frpc:latest
+    image: yuanjua/frpc:latest # OR ghcr.io/yuanjua/frpc:latest
     container_name: frpc
     restart: always
     network_mode: host
@@ -78,6 +78,14 @@ Start the client:
 
 ```bash
 docker-compose up -d
+```
+
+## Build from Source
+
+```bash
+docker buildx build --build-arg FRP_VERSION=0.65.0 -t local/frps:test ./frps --load
+
+docker buildx build --build-arg FRP_VERSION=0.65.0 -t local/frpc:test ./frpc --load
 ```
 
 ## Architecture Support
