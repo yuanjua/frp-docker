@@ -1,11 +1,12 @@
 # FRP Docker Images
 
-A minimalist Docker build for FRP (Fast Reverse Proxy).
+A minimalist Docker daily build for FRP (Fast Reverse Proxy).
+每日更新的 FRP 镜像。
 https://github.com/yuanjua/frp-docker.git
 
 ## Installation
 
-### Server (frps)
+### Server (frps) 服务器
 
 `docker-compose.yml`:
 
@@ -39,7 +40,7 @@ Start the server:
 docker-compose up -d
 ```
 
-### Client (frpc)
+### Client (frpc) 客户端
 
 `docker-compose.yml`:
 
@@ -82,5 +83,5 @@ docker-compose up -d
 ## Architecture Support
 
 This image is built as a **multi-arch manifest**. 
-- `latest` supports both `linux/amd64` and `linux/arm64`.
-- Docker will automatically pull the correct architecture for your device.
+- `latest` supports both `linux/amd64` and `linux/arm64`. 支持 AMD64 和 ARM64 架构。
+- Docker will automatically pull the correct architecture for your device.  Docker 会自动拉取适合您设备的架构。 
