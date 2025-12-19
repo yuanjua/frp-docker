@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  frps:
+    image: local/frps:test
+    volumes:
+      - ./frps.toml:/frp/frps.toml
+    ports:
+      - "7000:7000"
+
+  service-app:
+    image: traefik/whoami
+    expose:
+      - "80"
+
+  frpc-provider:
+    image: local/frpc:test
+    volumes:
+      - ./frpc-provider.toml:/frp/frpc.toml
+    depends_on:
+      - frps
+      - service-app
+
+  frpc-visitor:
+    image: local/frpc:test
+    volumes:
+      - ./frpc-visitor.toml:/frp/frpc.toml
+    depends_on:
+      - frps
+    ports:
+      - "6000:6000"

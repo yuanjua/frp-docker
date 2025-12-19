@@ -1,0 +1,69 @@
+name: Build Optimized FRP
+
+on:
+  schedule:
+    - cron: '0 4 * * *'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get Version
+        id: ver
+        run: |
+          V=$(curl -sL https://api.github.com/repos/fatedier/frp/releases/latest | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
+          echo "ver=$V" >> $GITHUB_OUTPUT
+
+      - name: Lowercase Repo Owner
+        id: owner
+        run: |
+          echo "owner=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_OUTPUT
+        env:
+          GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up QEMU & Buildx
+        uses: docker/setup-qemu-action@v3
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Build frps
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frps
+          platforms: linux/amd64,linux/arm64
+          push: true
+          build-args: FRP_VERSION=${{ steps.ver.outputs.ver }}
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/frps:latest
+            ghcr.io/${{ steps.owner.outputs.owner }}/frps:latest
+
+      - name: Build frpc
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frpc
+          platforms: linux/amd64,linux/arm64
+          push: true
+          build-args: FRP_VERSION=${{ steps.ver.outputs.ver }}
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/frpc:latest
+            ghcr.io/${{ steps.owner.outputs.owner }}/frpc:latest

@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  frps:
+    image: local/frps:test
+    volumes:
+      - ./frps-full.toml:/frp/frps.toml
+    ports:
+      - "7000:7000"
+      - "7500:7500"     # Dashboard
+      - "8080:8080"     # Vhost HTTP
+      - "6001:6001"     # TCP Proxy Port
+      - "6002:6002/udp" # UDP Proxy Port
+
+  # Simulate TCP/HTTP Business Service
+  service-app:
+    image: traefik/whoami
+    expose:
+      - "80"
+
+  # Simulate UDP Business Service (Echo Server)
+  service-udp:
+    image: alpine/socat
+    # Listen on UDP 1234, return whatever received
+    command: "-v UDP4-LISTEN:1234,fork EXEC:/bin/cat"
+    expose:
+      - "1234/udp"
+
+  frpc:
+    image: local/frpc:test
+    volumes:
+      - ./frpc-full.toml:/frp/frpc.toml
+    depends_on:
+      - frps
+      - service-app
+      - service-udp

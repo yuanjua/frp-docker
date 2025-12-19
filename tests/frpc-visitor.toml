@@ -1,0 +1,10 @@
+serverAddr = "frps"
+serverPort = 7000
+
+[[visitors]]
+name = "secret-web-visitor"
+type = "stcp"
+serverName = "secret-web"
+secretKey = "123456"
+bindAddr = "0.0.0.0"
+bindPort = 6000

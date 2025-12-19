@@ -1,0 +1,9 @@
+serverAddr = "frps"
+serverPort = 7000
+
+[[proxies]]
+name = "secret-web"
+type = "stcp"
+secretKey = "123456"
+localIP = "service-app"
+localPort = 80

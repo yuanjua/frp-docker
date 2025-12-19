@@ -1,0 +1,26 @@
+serverAddr = "frps"
+serverPort = 7000
+
+# 1. TCP Test (Map to whoami port 80)
+[[proxies]]
+name = "test-tcp"
+type = "tcp"
+localIP = "service-app"
+localPort = 80
+remotePort = 6001
+
+# 2. UDP Test (Map to socat UDP echo service)
+[[proxies]]
+name = "test-udp"
+type = "udp"
+localIP = "service-udp"
+localPort = 1234
+remotePort = 6002
+
+# 3. HTTP Test (Domain Routing)
+[[proxies]]
+name = "test-http"
+type = "http"
+localIP = "service-app"
+localPort = 80
+customDomains = ["test.example.com"]
