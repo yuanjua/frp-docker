@@ -1,8 +1,9 @@
-# Optimized FRP Docker Images
+# FRP Docker Images
 
 A minimalist Docker build for FRP (Fast Reverse Proxy).
+https://github.com/yuanjua/frp-docker.git
 
-## Quick Start
+## Installation
 
 ### Server (frps)
 
@@ -22,6 +23,22 @@ services:
       - TZ=Asia/Shanghai
 ```
 
+Example `frps.toml`:
+
+```toml
+# frps.toml
+bindPort = 7000
+vhostHTTPPort = 80
+auth.token = "12345678"  # Change to Strong Token
+
+```
+
+Start the server:
+
+```bash
+docker-compose up -d
+```
+
 ### Client (frpc)
 
 `docker-compose.yml`:
@@ -38,6 +55,28 @@ services:
       - ./frpc.toml:/frp/frpc.toml
     environment:
       - TZ=Asia/Shanghai
+```
+
+Example `frpc.toml`:
+
+```toml
+# frpc.toml
+serverAddr = "1.2.3.4"
+serverPort = 7000
+auth.token = "12345678" # Must Match Server Token
+
+[[proxies]]
+name = "ssh-tcp"
+type = "tcp"
+localIP = "127.0.0.1"
+localPort = 22
+remotePort = 6000
+```
+
+Start the client:
+
+```bash
+docker-compose up -d
 ```
 
 ## Architecture Support
