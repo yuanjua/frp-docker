@@ -1,4 +1,4 @@
-name: Build Optimized FRP
+name: Build FRP
 
 on:
   schedule:

@@ -37,7 +37,7 @@ auth.token = "12345678"  # Change to Strong Token
 Start the server:
 
 ```bash
-docker compose up -d
+docker compose up -d 
 ```
 
 ### Client (frpc) 客户端
@@ -77,7 +77,7 @@ remotePort = 6000
 Start the client:
 
 ```bash
-docker compose up -d
+docker compose up -d 
 ```
 
 ## Build from Source
